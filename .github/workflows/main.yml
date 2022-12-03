@@ -1,0 +1,16 @@
+name: Github Action Build PKGBUILD
+on: push
+jobs:
+  build_for_arch:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Build linux-ck-uksm for arch
+        uses: antman666/build-aur-action@mine
+        with:
+          repo-name: linux-ck-uksm
+      - uses: ncipollo/release-action@v1.11.2
+        with:
+          allowUpdates: true
+          tag: "linux-ck-uksm_v6.0.10-3"
+          artifacts: "./*/*.zst"
+          token: ${{ secrets.GITHUB_TOKEN }}
