@@ -96,7 +96,7 @@ source=(
   0003-soundwire-intel-Initialize-clock-stop-timeout.patch
   0004-drm-sched-add-DRM_SCHED_FENCE_DONT_PIPELINE-flag.patch
   0005-drm-amdgpu-use-DRM_SCHED_FENCE_DONT_PIPELINE-for-VM-.patch
-  0006-ksm.patch::https://raw.githubusercontent.com/sirlucjan/kernel-patches/master/6.0/ksm-mm-patches-v2/0001-ksm-mm-patches.patch
+  0006-ksm.patch::https://raw.githubusercontent.com/sirlucjan/kernel-patches/master/6.0/ksm-maple-patches-v2/0001-ksm-maple-patches.patch
   0007-bbr2.patch::https://raw.githubusercontent.com/sirlucjan/kernel-patches/master/6.0/bbr2-patches-v2/0001-tcp_bbr2-introduce-BBRv2.patch
 )
 validpgpkeys=(
