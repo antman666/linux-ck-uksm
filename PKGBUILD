@@ -6,7 +6,7 @@
 # that is not null to enable their respective build options
 
 # Tweak kernel options prior to a build via nconfig
-_makenconfig=y
+_makenconfig=
 
 # Only compile select modules to reduce the number of modules built
 #
