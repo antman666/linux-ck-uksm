@@ -17,12 +17,12 @@ _makenconfig=
 _localmodcfg=
 
 # Compile using clang rather than gcc
-_clangbuild=
+_clangbuild=y
 
 # Optionally select a sub architecture by number or leave blank which will
 # require user interaction during the build. Note that the generic (default)
 # option is 36.
-_subarch=
+_subarch=36
 
 #  1. AMD Opteron/Athlon64/Hammer/K8 (MK8)
 #  2. AMD Opteron/Athlon64/Hammer/K8 with SSE3 (MK8SSE3) (NEW)
@@ -67,9 +67,9 @@ _subarch=
 #  41. AMD-Native optimizations autodetected by GCC (MNATIVE_AMD) (NEW)
 
 ### IMPORTANT: Do no edit below this line unless you know what you're doing
-pkgbase=linux-ck-uksm
-pkgver=6.0.10
-pkgrel=3
+pkgbase=linux-ck
+pkgver=6.1
+pkgrel=1
 arch=(x86_64)
 url="https://wiki.archlinux.org/index.php/Linux-ck"
 license=(GPL2)
@@ -82,8 +82,8 @@ options=('!strip')
 
 # https://ck-hack.blogspot.com/2021/08/514-and-future-of-muqss-and-ck-once.html
 # acknowledgment to xanmod for initially keeping the hrtimer patches up to date
-_ckhrtimer=linux-6.0.y
-_commit=5be918e798e2c2cc94fa7dd0f6f031921a4f7598
+_ckhrtimer=linux-6.1.y
+_commit=fdbdf7e0ec56cd59e11d024c473e766429271a5c
 
 _gcc_more_v=20221104
 source=(
@@ -92,29 +92,23 @@ source=(
   "more-uarches-$_gcc_more_v.tar.gz::https://github.com/graysky2/kernel_compiler_patch/archive/$_gcc_more_v.tar.gz"
   "ck-hrtimer-$_commit.tar.gz::https://github.com/graysky2/linux-patches/archive/$_commit.tar.gz"
   0001-ZEN-Add-sysctl-and-CONFIG-to-disallow-unprivileged-C.patch
-  0002-mm-vmscan-fix-extreme-overreclaim-and-swap-floods.patch
-  0003-soundwire-intel-Initialize-clock-stop-timeout.patch
-  0004-drm-sched-add-DRM_SCHED_FENCE_DONT_PIPELINE-flag.patch
-  0005-drm-amdgpu-use-DRM_SCHED_FENCE_DONT_PIPELINE-for-VM-.patch
-  0006-ksm.patch::https://raw.githubusercontent.com/sirlucjan/kernel-patches/master/6.0/ksm-cachyos-patches/0001-ksm-cachyos-patches.patch
-  0007-bbr2.patch::https://raw.githubusercontent.com/sirlucjan/kernel-patches/master/6.0/bbr2-patches-v2/0001-tcp_bbr2-introduce-BBRv2.patch
+  0002-drm-i915-improve-the-catch-all-evict-to-handle-lock-.patch
+  0003-ksm.patch::https://raw.githubusercontent.com/sirlucjan/kernel-patches/master/6.1/uksmd-cachyos-patches-all/0001-uksmd-cachyos-patches.patch
+  0004-bbr2.patch::https://raw.githubusercontent.com/sirlucjan/kernel-patches/master/6.1/bbr2-patches/0001-tcp_bbr2-introduce-BBRv2.patch
 )
 validpgpkeys=(
   'ABAF11C65A2970B130ABE3C479BE3E4300411886'  # Linus Torvalds
   '647F28654894E3BD457199BE38DBBDC86092693E'  # Greg Kroah-Hartman
 )
-sha256sums=('39e57fcd84cd70bfa3e1a4185d3aa0ed7f1432f24c6548d16326b0c3c9541dd0'
+sha256sums=('2ca1f17051a430f6fed1196e4952717507171acfd97d96577212502703b25deb'
             'SKIP'
-            'a091e6ed2d267072adfc38717bee4950d5be7ac6bf5945ff446d4bdd25505ad9'
+            '0571ea17a2e38458096b679418197bbea8c414388f628d122517f3a1f3a31b3a'
             '3a8f397b89bad95c46f42c0f80ede7536a4a45a28621e00ed486918a55f905ed'
-            '85b197dbe033264925b4803b3c8907ed73b967061c098e269eacd5575d6da34b'
-            '09d6205b2550143a3a7b2614f10610a00a7b3bbe26aadaa7c128d87f662e5f76'
-            'cade95b098bd1ccd14f1cf111e95572b61dc72099ebe767e75beca4ead12cc40'
-            '83553cf53bd06efc20a3f432562358c160f1517dad88694c2ff2389df5cc38f9'
-            '1a123dcf3c4b797eec0bac0ffe13ff015b95f21ca4ae40800e1a03f1d74c420a'
-            '9d855466dfb15f3e9a57db77c58ed57c59d0db0e677787653491ae44fc5d0f86'
-            '55b986be589853228ba9049e66ea77fc1552029dbfe723d32f7b3cb0c0d232e0'
-            '64a1f18dcfe38331bb504e85a6d2241ba8a7b4495c8d80b8513fc2c76788efaf')
+            '6d3b9cb4639c1c5eb4e2697aed0dbffa5b4a37d63a0861dec8315dd052723e0e'
+            '01f0f3d1b79fd789e01ba5debb3b63e9716679199b6fd79e81744d688632e273'
+            'a3dc6156ca04fef849662a8febd2ebc7ca175de54253ef293f4c8ce638149507'
+            '1e88663a54843a747d717ea6f2fc5d1233056c30433e1b685d09cae9921a2cff'
+            '016ed515dd7d940e5c22789dd16cbb060365311df72ff62d0b8a10261779f757')
 
 prepare() {
   cd linux-${pkgver}
@@ -274,7 +268,7 @@ _package-headers() {
   install -Dt "$builddir/tools/objtool" tools/objtool/objtool
 
   # required when DEBUG_INFO_BTF_MODULES is enabled
-  install -Dt "$builddir/tools/bpf/resolve_btfids" tools/bpf/resolve_btfids/resolve_btfids
+  #install -Dt "$builddir/tools/bpf/resolve_btfids" tools/bpf/resolve_btfids/resolve_btfids
 
   echo "Installing headers..."
   cp -t "$builddir" -a include
