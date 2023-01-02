@@ -68,14 +68,14 @@ _subarch=36
 
 ### IMPORTANT: Do no edit below this line unless you know what you're doing
 pkgbase=linux-ck
-pkgver=6.1
+pkgver=6.1.2
 pkgrel=1
 arch=(x86_64)
 url="https://wiki.archlinux.org/index.php/Linux-ck"
 license=(GPL2)
 depends=(uksmd)
 makedepends=(
-  bc libelf cpio perl tar xz
+  bc libelf pahole cpio perl tar xz
 )
 [[ -n "$_clangbuild" ]] && makedepends+=(clang llvm lld python)
 options=('!strip')
@@ -85,7 +85,7 @@ options=('!strip')
 _ckhrtimer=linux-6.1.y
 _commit=fdbdf7e0ec56cd59e11d024c473e766429271a5c
 
-_gcc_more_v=20221104
+_gcc_more_v=20221217
 source=(
   "https://cdn.kernel.org/pub/linux/kernel/v6.x/linux-$pkgver.tar".{xz,sign}
   config         # the main kernel config file
@@ -93,8 +93,9 @@ source=(
   "ck-hrtimer-$_commit.tar.gz::https://github.com/graysky2/linux-patches/archive/$_commit.tar.gz"
   0001-ZEN-Add-sysctl-and-CONFIG-to-disallow-unprivileged-C.patch
   0002-drm-i915-improve-the-catch-all-evict-to-handle-lock-.patch
-  0003-ksm.patch::https://raw.githubusercontent.com/sirlucjan/kernel-patches/master/6.1/uksmd-cachyos-patches-all/0001-uksmd-cachyos-patches.patch
-  0004-bbr2.patch::https://raw.githubusercontent.com/sirlucjan/kernel-patches/master/6.1/bbr2-patches/0001-tcp_bbr2-introduce-BBRv2.patch
+  0003-ALSA-hda-hdmi-Static-PCM-mapping-again-with-AMD-HDMI.patch
+  0004-ksm.patch::https://raw.githubusercontent.com/sirlucjan/kernel-patches/master/6.1/uksmd-cachyos-patches-all/0001-uksmd-cachyos-patches.patch
+  0005-bbr2.patch::https://raw.githubusercontent.com/sirlucjan/kernel-patches/master/6.1/bbr2-patches/0001-tcp_bbr2-introduce-BBRv2.patch
 )
 validpgpkeys=(
   'ABAF11C65A2970B130ABE3C479BE3E4300411886'  # Linus Torvalds
@@ -154,6 +155,13 @@ prepare() {
 
   # ck recommends 1000 Hz tick and the hrtimer patches in lieu of ck1
   scripts/config --enable CONFIG_HZ_1000
+
+  msg2 "Enable BBR2"
+  scripts/config --module TCP_CONG_CUBIC \
+                 --disable DEFAULT_CUBIC \
+                 --enable TCP_CONG_BBR2 \
+                 --enable DEFAULT_BBR2 \
+                 --set-str DEFAULT_TCP_CONG bbr2
 
   # these are ck's htrimer patches
   echo "Patching with ck hrtimer patches..."
