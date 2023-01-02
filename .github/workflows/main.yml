@@ -11,6 +11,6 @@ jobs:
       - uses: ncipollo/release-action@v1.12.0
         with:
           allowUpdates: true
-          tag: "linux-ck-uksm_v6.1.0-1"
+          tag: "linux-ck-uksm_v6.1.2-1"
           artifacts: "./*/*.zst"
           token: ${{ secrets.GITHUB_TOKEN }}
