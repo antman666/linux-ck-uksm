@@ -113,9 +113,9 @@ prepare() {
   cd linux-${pkgver}
 
   msg2 "Setting version..."
-  scripts/setlocalversion --save-scmversion
   echo "-$pkgrel" > localversion.10-pkgrel
   echo "${pkgbase#linux}" > localversion.20-pkgname
+  make -s kernelrelease > version
 
   local src
   for src in "${source[@]}"; do
