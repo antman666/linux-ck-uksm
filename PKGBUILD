@@ -68,22 +68,22 @@ _subarch=36
 
 ### IMPORTANT: Do no edit below this line unless you know what you're doing
 pkgbase=linux-ck
-pkgver=6.1.2
+pkgver=6.3.9
 pkgrel=1
 arch=(x86_64)
 url="https://wiki.archlinux.org/index.php/Linux-ck"
 license=(GPL2)
 depends=(uksmd)
 makedepends=(
-  bc libelf pahole cpio perl tar xz
+  bc libelf gettext git pahole cpio perl tar xz
 )
 [[ -n "$_clangbuild" ]] && makedepends+=(clang llvm lld python)
 options=('!strip')
 
 # https://ck-hack.blogspot.com/2021/08/514-and-future-of-muqss-and-ck-once.html
 # acknowledgment to xanmod for initially keeping the hrtimer patches up to date
-_ckhrtimer=linux-6.1.y
-_commit=fdbdf7e0ec56cd59e11d024c473e766429271a5c
+_ckhrtimer=linux-6.3.y
+_commit=d09271d382ae852c98e17bd7426fc8021e7b465e
 
 _gcc_more_v=20221217
 source=(
@@ -92,10 +92,8 @@ source=(
   "more-uarches-$_gcc_more_v.tar.gz::https://github.com/graysky2/kernel_compiler_patch/archive/$_gcc_more_v.tar.gz"
   "ck-hrtimer-$_commit.tar.gz::https://github.com/graysky2/linux-patches/archive/$_commit.tar.gz"
   0001-ZEN-Add-sysctl-and-CONFIG-to-disallow-unprivileged-C.patch
-  0002-drm-i915-improve-the-catch-all-evict-to-handle-lock-.patch
-  0003-ALSA-hda-hdmi-Static-PCM-mapping-again-with-AMD-HDMI.patch
-  0004-ksm.patch::https://raw.githubusercontent.com/sirlucjan/kernel-patches/master/6.1/uksmd-cachyos-patches-all/0001-uksmd-cachyos-patches.patch
-  0005-bbr2.patch::https://raw.githubusercontent.com/sirlucjan/kernel-patches/master/6.1/bbr2-patches/0001-tcp_bbr2-introduce-BBRv2.patch
+  0002-ksm.patch::https://raw.githubusercontent.com/sirlucjan/kernel-patches/master/6.3/uksmd-cachyos-patches-all/0001-uksmd-cachyos-patches.patch
+  0003-bbr2.patch::https://raw.githubusercontent.com/sirlucjan/kernel-patches/master/6.3/bbr2-patches/0001-tcp_bbr2-introduce-BBRv2.patch
 )
 validpgpkeys=(
   'ABAF11C65A2970B130ABE3C479BE3E4300411886'  # Linus Torvalds
