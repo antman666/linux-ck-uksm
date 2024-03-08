@@ -6,4 +6,7 @@ jobs:
     steps:
       - name: Build linux-ck-uksm for arch
         run: |
-          /lib/ld-linux-x86-64.so.2 --help | grep "x86-64-v"
+          sudo apt install curl
+          curl -L -O https://raw.githubusercontent.com/HenrikBengtsson/x86-64-level/main/x86-64-level
+          chmod +x x86-64-level
+          ./x86-64-level
