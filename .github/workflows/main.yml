@@ -7,12 +7,3 @@ jobs:
       - name: Build linux-ck-uksm for arch
         run: |
           /lib/ld-linux-x86-64.so.2 --help | grep "x86-64-v"
-        uses: antman666/build-aur-action@mine
-        with:
-          repo-name: linux-ck-uksm
-      - uses: ncipollo/release-action@main
-        with:
-          allowUpdates: true
-          tag: "linux-ck-uksm_v6.3.9-1"
-          artifacts: "./*/*.zst"
-          token: ${{ secrets.GITHUB_TOKEN }}
