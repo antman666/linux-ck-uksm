@@ -5,6 +5,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Build linux-ck-uksm for arch
+        run: |
+          /lib/ld-linux-x86-64.so.2 --help | grep "x86-64-v"
         uses: antman666/build-aur-action@mine
         with:
           repo-name: linux-ck-uksm
